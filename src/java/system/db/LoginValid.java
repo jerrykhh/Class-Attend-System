@@ -34,20 +34,20 @@ public class LoginValid {
         return DriverManager.getConnection(url, username, password);
     }
 
-    public boolean validateStaffLogin(LoginBean loginBean) {
-        boolean isSuccess = false;
+    public LoginBean validateLogin(LoginBean loginBean) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         try {
             cnnct = getConnection();
-            String preQueryStatement = "SELECT * FROM Teacher WHERE id=? and password=? AND title=?";
+            String preQueryStatement = "SELECT * FROM "+loginBean.getRole()+" WHERE id=? and password=?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, loginBean.getUsername());
             pStmnt.setString(2, loginBean.getPassword());
-            pStmnt.setString(3, loginBean.getRole());
             ResultSet rs = pStmnt.executeQuery();
             if (rs.next()) {
-                isSuccess = true;
+                loginBean.setFname(rs.getString("fname"));
+                loginBean.setLname(rs.getString("lname"));
+                return loginBean;
             }
             pStmnt.close();
             cnnct.close();
@@ -57,37 +57,9 @@ public class LoginValid {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch (IOException ex) {
+        }catch (IOException ex){
             ex.printStackTrace();
         }
-        return isSuccess;
-    }
-
-    public boolean validateStudentLogin(LoginBean loginBean) {
-        boolean isSuccess = false;
-        Connection cnnct = null;
-        PreparedStatement pStmnt = null;
-        try {
-            cnnct = getConnection();
-            String preQueryStatement = "SELECT * FROM Student WHERE id=? and password=?";
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, loginBean.getUsername());
-            pStmnt.setString(2, loginBean.getPassword());
-            ResultSet rs = pStmnt.executeQuery();
-            if (rs.next()) {
-                isSuccess = true;
-            }
-            pStmnt.close();
-            cnnct.close();
-
-        } catch (SQLException ex) {
-            while (ex != null) {
-                ex.printStackTrace();
-                ex = ex.getNextException();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return isSuccess;
+        return null;
     }
 }

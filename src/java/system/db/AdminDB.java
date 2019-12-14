@@ -403,6 +403,18 @@ public class AdminDB {
                 teacherBean.setEmail(result.getString("email"));
                 teacherBean.setBirthday(result.getString("birthday"));
                 teacherBean.setId(result.getString("id"));
+                String checkQuery = "SELECT COUNT(*) AS count FROM admin WHERE id = ?";
+                PreparedStatement checkpStmnt = connt.prepareStatement(checkQuery);
+                checkpStmnt.setString(1, checkQuery);
+                ResultSet chkResult = checkpStmnt.executeQuery();
+                boolean isAdmin = false;
+                if(chkResult.next()){
+                    if(chkResult.getInt("count") > 0){
+                        isAdmin = true;
+                    }
+                }
+                if(isAdmin)
+                    teacherBean.setAdmin(isAdmin);
                 list.add(teacherBean);
             }
         } catch (SQLException ex) {

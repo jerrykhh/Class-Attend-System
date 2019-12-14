@@ -17,6 +17,7 @@ public class AdminBean {
     private String gender;
     private String email;
     private String birthday;
+    private boolean Teacher;
 
     public String getId() {
         return id;
@@ -69,5 +70,15 @@ public class AdminBean {
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
+
+    public boolean isTeacher() {
+        return Teacher;
+    }
+
+    public void setTeacher(boolean Teacher) {
+        this.Teacher = Teacher;
+    }
+    
+    
 
 }

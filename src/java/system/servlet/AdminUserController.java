@@ -146,6 +146,18 @@ public class AdminUserController extends HttpServlet {
                     rd = this.getServletContext()
                             .getRequestDispatcher("/admin/user.jsp");
                     rd.forward(request, response);
+                }else if(action != null && action.equals("")){
+                    
+                } else if (action != null && action.equals("admin")) {
+                    if (db.checkAdminDupliId(teacherId)) {
+                        request.setAttribute("DupMes", teacherId);
+                        rd = this.getServletContext()
+                                .getRequestDispatcher("/admin/user.jsp");
+                        rd.forward(request, response);
+                    } else {
+                        db.insertAdmin(teacherId);
+                    }
+                    response.sendRedirect("user?role=Admin");
                 } else if (action != null && action.equals("addPage")) {
                     rd = this.getServletContext()
                             .getRequestDispatcher("/admin/userAdd.jsp");
@@ -224,8 +236,8 @@ public class AdminUserController extends HttpServlet {
                     rd.forward(request, response);
                 }
             } else if (role.equals("Admin")) {
-                
-                 String action = request.getParameter("action");
+
+                String action = request.getParameter("action");
                 String adminId = request.getParameter("id");
                 request.setAttribute("adminList", db.getAdmin());
                 if (adminId != null && action != null && action.equals("delete")) {
@@ -305,7 +317,7 @@ public class AdminUserController extends HttpServlet {
                     }
                     request.setAttribute("saveMes", adminId);
                     request.setAttribute("adminList", db.getAdmin());
-                    
+
                 } else if (adminId != null) {
                     System.out.println("TEST Point6");
                     request.setAttribute("admin", db.getAdminDetials(adminId));

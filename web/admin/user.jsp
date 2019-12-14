@@ -142,6 +142,11 @@
                                                 <th>Gender</th>
                                                 <th>Birthday</th>
                                                 <th>Email</th>
+                                                <%
+                                                    if(request.getAttribute("teacherList")!= null || request.getAttribute("adminList") != null){
+                                                        out.print("<th>Title</th>");
+                                                    }
+                                                    %>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -191,10 +196,15 @@
                                                     out.print("<td>" + teacher.getGender() + "</td>");
                                                     out.print("<td>" + teacher.getBirthday() + "</td>");
                                                     out.print("<td>" + teacher.getEmail() + "</td>");
+                                                    if(teacher.isAdmin()){
+                                                        out.print("<td>Teacher(A)</td>");
+                                                    }else{
+                                                        out.print("<td>Teacher</td>");
+                                                    }
                                                     out.print("<td>");
                                                     out.print("<a href='user?role=Teacher&id=" + teacher.getId() + "'><button type='button' class='btn btn-info tableBtn'><i class='material-icons'>edit</i></button></a> ");
                                                     out.print("<a href='user?role=Teacher&id=" + teacher.getId() + "&action=delete'><button type='button' class='btn btn-danger tableBtn'><i class='material-icons'>delete</i></button></a> ");
-                                                    out.print(" <a href='user?role=Teacher&id=" + teacher.getId() + "&action=admin'><button type='button' class='btn btn-warning tableBtn'><i class='material-icons'>import_export</i></button></a>");
+                                                    out.print("<a href='user?role=Teacher&id=" + teacher.getId() + "&action=admin'><button type='button' class='btn btn-warning tableBtn'><i class='material-icons'>import_export</i></button></a>");
                                                     out.print("</td>");
                                                     out.print("</tr>");
                                                 }
@@ -218,6 +228,11 @@
                                                         out.print("<td>" + admin.getGender() + "</td>");
                                                         out.print("<td>" + admin.getBirthday() + "</td>");
                                                         out.print("<td>" + admin.getEmail() + "</td>");
+                                                        if(admin.isTeacher()){
+                                                            out.print("<td>Admin(T)</td>");
+                                                        }else{
+                                                            out.print("<td>Admin</td>");
+                                                        }
                                                         out.print("<td>");
                                                         out.print("<a href='user?role=Admin&id=" + admin.getId() + "'><button type='button' class='btn btn-info tableBtn'><i class='material-icons'>edit</i></button></a> ");
                                                         out.print("<a href='user?role=Admin&id=" + admin.getId() + "&action=delete'><button type='button' class='btn btn-danger tableBtn'><i class='material-icons'>delete</i></button></a> ");
